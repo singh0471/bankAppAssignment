@@ -362,6 +362,7 @@ class Person{
     }
 
 
+   
     transferAmountInOwnAccount(debitAccountNumber,creditAccountNumber,amount){
         try{
             if(typeof debitAccountNumber !== "number")
@@ -373,6 +374,8 @@ class Person{
 
             const debitAccount = this.validateAccountNumber(debitAccountNumber);
             const creditAccount = this.validateAccountNumber(creditAccountNumber);
+            const originalDebitBalance = debitAccount.getBalance();
+            const originalCreditBalance = creditAccount.getBalance();
             const debitBankID = debitAccount.getAccountBankID();
             const creditBankID = creditAccount.getAccountBankID();
             Bank.updateLedgerDetailsWithBankIDs(debitBankID,creditBankID,amount);
@@ -381,6 +384,8 @@ class Person{
             
         }
         catch(error){
+            debitAccount.setBalance(originalDebitBalance);
+            creditAccount.setBalance(originalCreditBalance);
             console.log(error);
         }
     }
@@ -397,14 +402,19 @@ class Person{
                     throw new Error("invalid amount value");
                 const debitAccount = this.validateAccountNumber(debitAccountNumber);
                 const creditAccount = Account.getUserAccountByBankID(bankID,creditAccountNumber);
+                const originalDebitBalance = debitAccount.getBalance();
+                const originalCreditBalance = creditAccount.getBalance();
                 const debitBankID = debitAccount.getAccountBankID();
-                const creditBankID = bankID;
+                debitAccount.debit(amount);
+                creditAccount.credit(amount);
+                const creditBankID = bankID
                 Bank.updateLedgerDetailsWithBankIDs(debitBankID,creditBankID,amount);
                 debitAccount.debit(amount);
                 creditAccount.credit(amount);
-
             }
             catch(error){
+                debitAccount.setBalance(originalDebitBalance);
+                creditAccount.setBalance(originalCreditBalance);
                 console.log(error);
             }
     }
