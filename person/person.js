@@ -398,7 +398,7 @@ class Person{
                 const debitAccount = this.validateAccountNumber(debitAccountNumber);
                 const creditAccount = Account.getUserAccountByBankID(bankID,creditAccountNumber);
                 const debitBankID = debitAccount.getAccountBankID();
-                const creditBankID = creditAccount.getAccountBankID();
+                const creditBankID = bankID;
                 Bank.updateLedgerDetailsWithBankIDs(debitBankID,creditBankID,amount);
                 debitAccount.debit(amount);
                 creditAccount.credit(amount);
