@@ -423,6 +423,15 @@ class Person{
             console.log(error);
         }
     }
+    depositMoneyWithAccountNumber(accountNumber,amount){
+        try{
+            const account = this.validateAccountNumber(accountNumber);
+            account.deposit(amount);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
 
     viewAccountPassbookWithCustomerID(personID,accountNumber,pageNumber){
         try{
