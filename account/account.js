@@ -107,6 +107,20 @@ class Account{
         }
     }
 
+    deposit(amount){
+        try{
+            if(typeof amount !== "number")
+                throw new Error("invalid amount");
+            
+
+            this.#balance += amount;        
+            this.passbook.push((new Date()).toLocaleString(),"deposit",amount,this.#balance);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
     viewPassbook(pageNumber){
         try{
             if (typeof pageNumber !== "number") {
