@@ -4,6 +4,13 @@ class LedgerDetails{
     #abbreviation;
     #netBalance;
 
+    constructor(bankID,bankFullName,abbreviation,netBalance){
+        this.#bankID = bankID;
+        this.#bankFullName = bankFullName;
+        this.#abbreviation = abbreviation;
+        this.#netBalance = netBalance;
+    }
+
     getBankID(){
         return this.#bankID;
     }
@@ -20,12 +27,7 @@ class LedgerDetails{
         return this.#netBalance;
     }
 
-    constructor(bankID,bankFullName,abbreviation,netBalance){
-        this.#bankID = bankID;
-        this.#bankFullName = bankFullName;
-        this.#abbreviation = abbreviation;
-        this.#netBalance = netBalance;
-    }
+    
 
     static newLedgerDetails(bankID,bankFullName,abbreviation){
                 try{
@@ -53,5 +55,4 @@ class LedgerDetails{
 
 
 }
-
 module.exports = LedgerDetails;
