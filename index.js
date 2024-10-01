@@ -1,6 +1,6 @@
 const Person = require("./person/person.js");
 
-const Person = require("./person/person.js");
+
 
 // creating admin
 const admin  = Person.createNewAdmin("deependra","singh",23);
