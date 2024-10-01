@@ -5,7 +5,6 @@ class PassbookDetails{
     #amount;
     constructor(dateTime, transactionType,amount,currentAmount){
         this.#dateTime = dateTime;
-         
         this.#transactionType = transactionType;
         this.#amount = amount;
         this.#currentAmount = currentAmount;
@@ -31,4 +30,6 @@ class PassbookDetails{
         }
     }
 }
+
+
 module.exports = PassbookDetails;
