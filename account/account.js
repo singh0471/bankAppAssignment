@@ -28,13 +28,13 @@ class Account{
         return this.#isActive;
     }
 
-    constructor(accountNumber,accountBankID,accountHolderPersonID,balance){
+    constructor(accountNumber,accountBankID,accountHolderPersonID,balance,isActive,passbook){
         this.#accountNumber = accountNumber;
         this.#accountBankID = accountBankID;
         this.#accountHolderPersonID = accountHolderPersonID;
         this.#balance = balance;
-        this.#isActive = true;
-        this.passbook = [];
+        this.#isActive =isActive;
+        this.passbook = passbook;
     }
 
     static newAccount(accountBankID,accountHolderPersonID){
@@ -44,11 +44,20 @@ class Account{
             }
             if(typeof accountHolderPersonID !== "number"){
                 throw new Error("invalid number");}
-
             const accountNo = ++Account.#accountNumbers;
-            const account = new Account(accountNo,accountBankID,accountHolderPersonID,1000);
+            const account = new Account(accountNo,accountBankID,accountHolderPersonID,1000,true,[]);
             return account;
         }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    setBalance(amount){
+        try{
+        if(typeof amount !== "number")
+            throw new Error("invalid amount");
+        this.#balance = amount;}
         catch(error){
             console.log(error);
         }
@@ -100,7 +109,7 @@ class Account{
             if(amount>this.#balance)
                 throw new Error("insufficient balance");
             this.#balance -= amount;  
-            this.passbook.push((new Date()).toLocaleString(),"withdraw",amount,this.#balance);
+            this.passbook.push(PassbookDetails.newPassBookDetails((new Date()).toLocaleString(),"withdraw",amount,this.#balance));
         }
         catch(error){
             console.log(error);
@@ -160,12 +169,5 @@ class Account{
 
     
 
-    
-
-
-
-
-
 }
-
 module.exports = Account;
