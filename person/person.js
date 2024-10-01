@@ -9,7 +9,6 @@ class Person{
     #fullName;
     #isActive;
     #personID;
-   
     #isAdmin;
     #age;
     #accounts;
@@ -17,6 +16,17 @@ class Person{
 
     static #allAdmins = [];
     static #allCustomers = [];
+
+    constructor(personID,firstName,lastName,fullName,age,isActive,isAdmin,accounts){
+        this.#personID = personID;
+        this.#firstName = firstName;
+        this.#lastName = lastName;
+        this.#fullName = fullName;
+        this.#age = age;
+        this.#isActive = isActive;
+        this.#isAdmin = isAdmin;
+        this.#accounts = accounts;
+}
 
 
 
@@ -81,6 +91,7 @@ class Person{
 
     #updateFullName(){
         this.#fullName = `${this.#firstName} ${this.#lastName}`;
+        return this.#fullName;
     }
 
     #updateFirstName(firstName){
@@ -109,17 +120,7 @@ class Person{
         }
     }
 
-    constructor(personID,firstName,lastName,age,isActive,isAdmin,accounts){
-            this.#personID = personID;
-            this.#firstName = firstName;
-            this.#lastName = lastName;
-            this.#updateFullName();
-            this.#age = age;
-            this.#isActive = isActive;
-            this.#isAdmin = isAdmin;
-             
-            this.#accounts = accounts;
-    }
+    
     static createNewAdmin(firstName,lastName,age){
         try{
             if(typeof firstName !== "string")
@@ -130,7 +131,8 @@ class Person{
                 throw new Error("invalid age");
 
             const personID = ++Person.#personIDs;
-            const newAdmin = new Person(personID,firstName,lastName,age,true,true,0,[]);
+            const fullName = `${firstName} ${lastName}`;
+            const newAdmin = new Person(personID,firstName,lastName,fullName,age,true,true,0,[]);
             Person.getAllAdmins().push(newAdmin);
             return newAdmin;
 
@@ -246,7 +248,7 @@ class Person{
             
 
             const customer = this.getCustomerByCustomerID(customerID);
-            if(customer.getAllAccounts(1).length===0)
+            if(customer.getAllAccounts().length===0)
                 throw new Error("Customer cannot be deleted as they have accounts associated with them.");
             customer.setIsActive(false);
         }
@@ -337,7 +339,7 @@ class Person{
             if(typeof accountNumber !== "number")
                 throw new Error("invalid account number");
 
-            for(let i=0;i<this.#accounts;i++){
+            for(let i=0;i<this.#accounts.length;i++){
                 let account = this.#accounts[i];
                 if(account.getAccountNumber()===accountNumber && account.getIsActive())
                     return account;
@@ -362,7 +364,6 @@ class Person{
     }
 
 
-   
     transferAmountInOwnAccount(debitAccountNumber,creditAccountNumber,amount){
         try{
             if(typeof debitAccountNumber !== "number")
@@ -433,6 +434,7 @@ class Person{
             console.log(error);
         }
     }
+
     depositMoneyWithAccountNumber(accountNumber,amount){
         try{
             const account = this.validateAccountNumber(accountNumber);
