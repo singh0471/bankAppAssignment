@@ -1,4 +1,5 @@
 const LedgerDetails = require("../ledgerDetails/ledgerDetails.js");
+
 class Bank{
     static #bankIDs = 0;
     static #banks = [];
@@ -8,6 +9,15 @@ class Bank{
     #accounts;
     ledger;
     #isActive;
+
+    constructor(bankID,bankFullName,abbreviation,accounts,ledger,isActive){
+        this.#bankID = bankID;
+        this.#bankFullName = bankFullName;
+        this.#abbreviation = abbreviation;
+        this.#accounts = accounts;
+        this.ledger = ledger;
+        this.#isActive = isActive;
+    }  
 
     getBankID(){
         return this.#bankID;
@@ -32,14 +42,7 @@ class Bank{
         }
 
 
-    constructor(bankID,bankFullName,abbreviation,accounts,ledger,isActive){
-        this.#bankID = bankID;
-        this.#bankFullName = bankFullName;
-        this.#abbreviation = abbreviation;
-        this.#accounts = accounts;
-        this.ledger = ledger;
-        this.#isActive = isActive;
-    }    
+      
 
     static createNewBank(bankFullName,abbreviation){
             try{
@@ -48,7 +51,7 @@ class Bank{
                 if(typeof abbreviation !== "string")
                     throw new Error("invalid abbreviation");
                 const bankID = ++Bank.#bankIDs;
-                const newBank = new Bank(bankID,bankFullName,abbreviation);
+                const newBank = new Bank(bankID,bankFullName,abbreviation,[],[],true);
                 
                for(let i=0;i<Bank.#banks.length;i++){
                     let bankObj = Bank.#banks[i];
@@ -162,8 +165,8 @@ class Bank{
         try{
             const debitBank = Bank.findBank(debitBankID);
             const creditBank = Bank.findBank(creditBankID);
-            const debitBankLedgerDetailObject = debitBank.getLedgerDetailByBankID(creditBankID);
             const creditBankLedgerDetailObject = creditBank.getLedgerDetailByBankID(debitBankID);
+            const debitBankLedgerDetailObject = debitBank.getLedgerDetailByBankID(creditBankID);
             debitBankLedgerDetailObject.updateNetBalance(-amount);
             creditBankLedgerDetailObject.updateNetBalance(amount);
         }
